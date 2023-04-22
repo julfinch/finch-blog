@@ -73,6 +73,7 @@
         img-------------------VARCHAR(255)------◼️----✅-----
         date------------------DATETIME----------◼️----✅-----
         uid-------------------INT---------------◼️----✅-----
+        cat-------------------VARCHAR(45)-------◼️----◼️-----
     ```
 
 1. Below the Table, click the `Foreign Keys` tab. Choose CASCADE so that when we delete a user, it's posts will be deleted too.
@@ -128,7 +129,7 @@
         app.use("/api/users", userRoutes)
         app.use("/api/posts", postRoutes)
     ```
-## AUTH.JS SETUP
+## AUTHENTICATION SETUP
 1. Open `auth.js` under `routes` and add the POST method.
     ```shell
         import { register, login, logout } from '../controllers/auth.js'
@@ -222,3 +223,30 @@
             }).status(200).json("User has been logged out")
         }
     ```
+
+## BLOG POSTING SETUP
+1. Open the `routes folder` and write the codes for the `posts.js`
+    ```shell
+        import express from 'express';
+        import { addPost, deletePost, getPost, getPosts, updatePost } from '../controllers/posts.js';
+
+        const router = express.Router()
+
+        router.get("/", getPosts)
+        router.get("/:id", getPost)
+        router.post("/", addPost)
+        router.delete("/:id", deletePost)
+        router.put("/:id", updatePost)
+
+        export default router
+    ```
+1. Open the `controllers folder` and write the codes for each of the functions in the `posts.js`.
+    ### getPosts
+
+    ### getPost
+
+    ### addPost
+
+    ### deletePost
+
+    ### updatePost
