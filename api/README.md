@@ -150,22 +150,22 @@
         import bcrypt from 'bcryptjs';
 
         export const register = (req, res) => {
-            //CHECK EXISTING USER
+            #CHECK EXISTING USER
             const q = "SELECT * FROM users WHERE email = ? OR username = ?";
 
             db.query(q, [req.body.email, req.body.name], (err,data) => {
                 if(err) return res.status(500).json(err);
                 if(data.length) return res.status(409).json("User already exists!");
 
-                //HASH THE PASSWORD AND CREATE A USER
+                #HASH THE PASSWORD AND CREATE A USER
                 const salt = bcrypt.genSaltSync(10);
                 const hash = bcrypt.hashSync(req.body.password, salt);
 
-                //ASSIGN INSERT METHOD FOR USERNAME,EMAIL AND PASSWORD
+                #ASSIGN INSERT METHOD FOR USERNAME,EMAIL AND PASSWORD
                 const q = "INSERT INTO users(`username`,`email`,`password`) VALUES (?)";
                 const values = [req.body.username, req.body.email, hash];
 
-                //INSERT THE QUERY AND VALUES INTO OUR DB
+                #INSERT THE QUERY AND VALUES INTO OUR DB
                 db.query(q, [values], (err, data) => {
                     if(err) return res.status(500).json(err);
                     return res.status(200).json("User has been created");
@@ -185,24 +185,24 @@
 1. Import `jsonwebtoken` inside `auth.js` in controllers folder.
     ```shell
         export const login = (req, res) => {
-            //CHECK EXISTING USER
+            #CHECK EXISTING USER
             const q = "SELECT * FROM users WHERE username = ?";
 
             db.query(q, [req.body.username], (err, data) => {
                 if(err) return res.status(500).json(err);
                 if(data.length === 0) return res.status(404).json("User not found!");
             
-                //CHECK PASSWORD
+                #CHECK PASSWORD
             const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].password);
 
             if(!isPasswordCorrect) return res.status(400).json("Wrong username or password!")
 
             const token = jwt.sign({id:data[0].id}, "jwtkey");
-            //Deconstrut data[0] so that we can separate password from other info because we don't want password to be sent back for security reasons.
+            #Deconstrut data[0] so that we can separate password from other info because we don't want password to be sent back for security reasons.
             const {password, ...other} = data[0];
 
-            //HTTPONLY means other methods cannot access our cookie except API requests using HTTP for more security.
-            //We will be requesting all other information except for the password for security.
+            #HTTPONLY means other methods cannot access our cookie except API requests using HTTP for more security.
+            #We will be requesting all other information except for the password for security.
             res.cookie("access_token", token, {
                 httpOnly: true,
             }).status(200).json(other)
@@ -300,9 +300,58 @@
     ```
 
     ### getPost
+    1. Paste the codes inside `posts.js` in `controllers` folder:
+    ```shell
+        export const getPost = (req, res) => {
+            # We will need to return username, title, desc, img, cat and date
+            # We will use the 2 tables to connect the uid of post to id of the user posting the article.
+            # We will find our posts using p.id which is 1, using uid in posts, we will look 
+            # the corresponding id in the users who posted it and then take its username.
+            # The question mark in the end is the id that we send from frontend using split method.
+            # Since both tables have the same `img`, we have to differentiate them by
+            # assigning u.img AS userImg then change the content in the frontend as {userImg}
+            const q = "SELECT `username`, `title`, `desc`, p.img, u.img AS userImg, `cat`, `date` FROM users u JOIN posts p ON u.id=p.uid WHERE p.id = ?"
+
+            # PARAMS is the id in our URL
+            db.query(q, [req.params.id], (err, data) => {
+                if(err) return res.status(500).json(err)
+
+                #We are fetching single item, this returns an array, we will return first item 
+                # which is our post.
+                return res.status(200).json(data[0])
+            })
+        }
+    ```
 
     ### addPost
 
     ### deletePost
+        ```shell
+            export const deletePost = (req, res) => {
+                # We will use jwt so that we can only delete our own posts and not by other's.
+                # User must be authenticated to be able to delete its own posts by accessing Cookie Tab.
+                # Don't forget to import jwt from 'jsonwebtoken'
+                const token = req.cookies.access_token
+                if(!token) return res.status(401).json("Not authenticated!")
+
+                # Remember in auth.js, when we login, we are sending our id inside
+                # const token = jwt.sign({ id: data[0].id }, "jwtkey"); and we will assign it here as userInfo
+                jwt.verify(token, "jwtkey", (err, userInfo) => {
+                    if(err) return res.status(403).json("Token is not valid!")
+
+                    #req.params.id is the id we get that frontend sent
+                    #We can only DELETE from our DB if id received is the same as DB id and uid.
+                    const postId = req.params.id;
+                    const q = "DELETE FROM posts WHERE `id` = ? AND `uid` = ? ";
+
+                    db.query(q, [postId, userInfo.id], (err, data) => {
+                        if(err) return res.status(403).json("You can only delete your own posts!");
+
+                        return res.json("Post has been deleted!");
+                    })
+                })
+            }
+
+        ```
 
     ### updatePost

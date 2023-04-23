@@ -1,34 +1,69 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Edit from '../img/edit.png'
 import Delete from '../img/delete.png'
 import Menu from '../components/Menu'
+import axios from 'axios'
+import moment from 'moment'
+import { AuthContext } from "../context/authContext";
 
 const Single = () => {
+
+  const [post, setPost] = useState([])
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const {currentUser} = useContext(AuthContext);
+
+  //In our routes router.get("/:id", getPost) method, we need to send the id of the post
+  //The location url is "localhost:3000/posts/1" where "1" is the id of the post
+  //To be able to get that id, we will use split method where it's the third string after slash
+  const postId = location.pathname.split("/")[2]
+
+  useEffect(() => {
+      const fetchData = async () => {
+      try {
+          const res = await axios.get(`/posts/${postId}`);
+          setPost(res.data);
+      } catch(err){
+          console.log(err)
+      }
+      };
+      fetchData();
+  }, [postId]);
+
+  const handleDelete = async() => {
+    try {
+      await axios.delete(`/posts/${postId}`)
+      navigate("/")
+    } catch (error) {
+      
+    }
+  }
+
   return (
     <div className='single'>
       <div className="content">
-        <img src="https://www.pitpat.com/wp-content/uploads/2020/07/Dog_-rights_MS_outdoors_stationary_two-dogs-sitting-on-path_white_black_gold-dog-and-gold-dog_@ilaanddrax-1.jpg" alt="" />
+        <img src={post?.img} alt="" />
         <div className="user">
-          <img src="https://www.pitpat.com/wp-content/uploads/2020/07/Dog_-rights_MS_outdoors_stationary_two-dogs-sitting-on-path_white_black_gold-dog-and-gold-dog_@ilaanddrax-1.jpg" alt="" />
+          {post.userImg && <img src={post.userImg} alt="" />
+          }
           <div className="info">
-            <span>John</span>
-            <p>Posted 2 days ago</p>
+            <span>{post.username}</span>
+            <p>Posted {moment(post.date).fromNow()}</p>
           </div>
+          {currentUser.username === post.username && (
           <div className="edit">
             <Link to={`/write?edit=2`}>
               <img src={Edit} alt="" />
             </Link>
-            <img src={Delete} alt="" />
+            <img onClick={handleDelete} src={Delete} alt="" />
           </div>
+          )}
         </div>
-        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      <br/><br/>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
+        <h1>{post.title}</h1>
+        {post.desc}
       </div>
       
       <Menu/>

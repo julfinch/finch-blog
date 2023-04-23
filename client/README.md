@@ -240,4 +240,62 @@
         }, [cat]);
     ```
 
-## FETCHING POSTS AND RECOMMENDED POSTS
+## UPDATE SINGLE.JSX - FETCHING POSTS AND RECOMMENDED POSTS
+1. Open `Single.jsx` and copy what we have applied to `Home.jsx`
+    ```shell
+        const [post, setPost] = useState([])
+
+        const location = useLocation();
+
+        const {currentUser} = useContext(AuthContext);
+
+        #In our routes router.get("/:id", getPost) method, we need to send the id of the post
+        #The location url is "localhost:3000/posts/1" where "1" is the id of the post
+        #To be able to get that id, we will use split method where it's the third string after slash
+        const postId = location.pathname.split("/")[2]
+
+        useEffect(() => {
+            const fetchData = async () => {
+            try {
+                const res = await axios.get(`/posts/${postId}`);
+                setPost(res.data);
+            } catch(err){
+                console.log(err)
+            }
+            };
+            fetchData();
+        }, [postId]);
+    ```
+1. Install `moment library` so that we can dynamically update the **Posted 2 days ago** based on the date of posting.
+    ```shell
+        npm i moment
+
+        <p>Posted {moment(post.date).fromNow()}</p>
+    ```
+1. Update the body of the page:
+    ```shell
+        <div className='single'>
+        <div className="content">
+            <img src={post?.img} alt="" />
+            <div className="user">
+            <img src="https://www.pitpat.com/wp-content/uploads/2020/07/Dog_-rights_MS_outdoors_stationary_two-dogs-sitting-on-path_white_black_gold-dog-and-gold-dog_@ilaanddrax-1.jpg" alt="" />
+            <div className="info">
+                <span>{post.username}</span>
+                <p>Posted {moment(post.date).fromNow()}</p>
+            </div>
+            {currentUser.username === post.username && (
+            <div className="edit">
+                <Link to={`/write?edit=2`}>
+                <img src={Edit} alt="" />
+                </Link>
+                <img src={Delete} alt="" />
+            </div>
+            )}
+            </div>
+            <h1>{post.title}</h1>
+            {post.desc}
+        </div>
+        
+        <Menu/>
+        </div>
+    ```
