@@ -218,3 +218,26 @@
         </Link>
         )}
     ```
+
+## GETTING POSTS FROM DB WITH OUR WITHOUT CATEGORY
+1. Go to the frontend folder and open `Home.jsx` and paste the codes below.
+    Try to put the code `const location = useLocation()` below to see what's inside it by using `console.log(location)`. We would see that one of them is `search: ?cat=art`, using it, we can add it to the link when getting the category. `Cat` is applied as dependency so that whenever we change our category, our useEffect function will be fired again and again.
+    ```shell
+        const [posts, setPosts] = useState([])
+
+        const cat = useLocation().search;
+
+        useEffect(() => {
+            const fetchData = async () => {
+            try {
+                const res = await axios.get(`/posts/${cat}`);
+                setPosts(res.data);
+            } catch(err){
+                console.log(err)
+            }
+            };
+            fetchData();
+        }, [cat]);
+    ```
+
+## FETCHING POSTS AND RECOMMENDED POSTS

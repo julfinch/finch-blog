@@ -241,7 +241,63 @@
         export default router
     ```
 1. Open the `controllers folder` and write the codes for each of the functions in the `posts.js`.
+    ```shell
+        import { db } from "../db.js";
+
+        export const getPosts = (req, res) => {
+            res.json("from controller")
+        }
+        export const getPost = (req, res) => {
+            res.json("from controller")
+        }
+        export const addPost = (req, res) => {
+            res.json("from controller")
+        }
+        export const deletePost = (req, res) => {
+            res.json("from controller")
+        }
+        export const updatePost = (req, res) => {
+            res.json("from controller")
+        }
+    ```
+
     ### getPosts
+    1. Paste the code below inside `posts.js` under `controllers`. The query is everything after the question mark in the address localhost:3000/?cat=art. We can specify which query to take and that is the category. Condition is that if there's a category, choose all posts with category, else, select all posts.
+        ```shell
+            export const getPosts = (req, res) => {
+            const q = req.query.cat ? "SELECT * FROM posts WHERE cat=?" : "SELECT * FROM posts";
+
+            db.query(q, [req.query.cat], (err, data) => {
+                if(err) return res.status(500).send(err)
+
+                return res.status(200).json(data)
+            })
+            }
+        ```
+    1. Create a sample post by manipulating the MySql Workbench. Set the DATE of the posts table first to null and apply. Then create a post like below. Make sure that the `uid` is linked to the account in the `users` table to you used to login to see it appear.
+    ```shell
+        id---title--------desc----img-------------------------date---------uid
+        1----first post---hello---paste the image url here-----------------9
+    ```
+    1. Go to the frontend folder and open `Home.jsx` and paste the codes below.
+    Try to put the code `const location = useLocation()` below to see what's inside it by using `console.log(location)`. We would see that one of them is `search: ?cat=art`, using it, we can add it to the link when getting the category. `Cat` is applied as dependency so that whenever we change our category, our useEffect function will be fired again and again.
+    ```shell
+        const [posts, setPosts] = useState([])
+
+        const cat = useLocation().search;
+
+        useEffect(() => {
+            const fetchData = async () => {
+            try {
+                const res = await axios.get(`/posts/${cat}`);
+                setPosts(res.data);
+            } catch(err){
+                console.log(err)
+            }
+            };
+            fetchData();
+        }, [cat]);
+    ```
 
     ### getPost
 
