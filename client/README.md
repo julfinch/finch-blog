@@ -272,13 +272,13 @@
 
         <p>Posted {moment(post.date).fromNow()}</p>
     ```
-1. Update the body of the page:
+1. Update the body of the page. Pass in category into the Menu component.
     ```shell
         <div className='single'>
         <div className="content">
             <img src={post?.img} alt="" />
             <div className="user">
-            <img src="https://www.pitpat.com/wp-content/uploads/2020/07/Dog_-rights_MS_outdoors_stationary_two-dogs-sitting-on-path_white_black_gold-dog-and-gold-dog_@ilaanddrax-1.jpg" alt="" />
+            {post.userImg && <img src={post.userImg} alt="" />}
             <div className="info">
                 <span>{post.username}</span>
                 <p>Posted {moment(post.date).fromNow()}</p>
@@ -296,6 +296,31 @@
             {post.desc}
         </div>
         
-        <Menu/>
+        <Menu cat={post.cat}/>
         </div>
+    ```
+
+## UPDATE MENU.JSX - FETCHING POSTS AND RECOMMENDED POSTS
+1. Open `Menu.jsx` and apply fetching method for recommended posts.
+    ```shell
+        const Menu = ({cat}) => {
+
+        const [post, setPosts] = useState([])
+
+        useEffect(() => {
+            const fetchData = async() => {
+                try{
+                    const res = await axios.get(`/posts/?cat=${cat}`)
+                    setPosts(res.data)
+                } catch(err) {
+                    console.log(err)
+                }
+            }
+            fetchData();
+        }, [cat])
+
+        return(
+            
+        )
+        }
     ```
