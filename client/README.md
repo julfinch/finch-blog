@@ -320,7 +320,9 @@
         }, [cat])
 
         return(
-            
+
         )
         }
     ```
+
+## SENDING THE POST TO EDIT PAGE UPON CLICKING EDIT BUTTON

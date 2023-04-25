@@ -15,7 +15,8 @@ const Single = () => {
   const navigate = useNavigate();
 
   const {currentUser} = useContext(AuthContext);
-
+  console.log('currentUser.username', currentUser.username)
+  console.log('post.username', post.username)
   //In our routes router.get("/:id", getPost) method, we need to send the id of the post
   //The location url is "localhost:3000/posts/1" where "1" is the id of the post
   //To be able to get that id, we will use split method where it's the third string after slash
@@ -55,7 +56,7 @@ const Single = () => {
           </div>
           {currentUser.username === post.username && (
           <div className="edit">
-            <Link to={`/write?edit=2`}>
+            <Link to={`/write?edit=2`} state={post}>
               <img src={Edit} alt="" />
             </Link>
             <img onClick={handleDelete} src={Delete} alt="" />
