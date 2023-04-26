@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
 $lightGreen: #b9e7e7;
+
+* {
+  font-family: "Poppins", sans-serif !important;
+}
 
 .app {
   display: flex;
   justify-content: center;
+  overflow-y: hidden;
+  position: relative;
   .container {
-    width: 1024px;
-
+    width: 100%;
     .link {
       text-decoration: none;
       color: inherit;
@@ -64,13 +71,18 @@ $lightGreen: #b9e7e7;
     //NAVBAR
 
     .navbar {
+      padding: 0px 120px;
+      position: relative;
+      height: 70px;
+      background-color: rgba(0,0,0,0.4);
+      color: #fff;
       .container {
-        padding: 10px 0px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         .logo {
           img {
+            margin-top: 4px;
             width: 120px;
           }
         }
@@ -80,7 +92,7 @@ $lightGreen: #b9e7e7;
           gap: 10px;
 
           h6 {
-            font-size: 16px;
+            font-size: 0.8em;
             font-weight: 300;
           }
 
@@ -88,11 +100,26 @@ $lightGreen: #b9e7e7;
             cursor: pointer;
           }
 
+          .login {
+            width: 70px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+            border: 1px solid white;
+            &:hover {
+              color: #000;
+              background-color: white;
+            }
+
+          }
           .write {
-            background-color: $lightGreen;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            //background-color: $lightGreen;
+            width: 70px;
+            height: 30px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -100,12 +127,26 @@ $lightGreen: #b9e7e7;
             border: 1px solid white;
 
             &:hover {
-              color: teal;
+              color: #000;
               background-color: white;
-              border: 1px solid teal;
             }
           }
         }
+      }
+    }
+
+    // BANNER
+    
+    .banner{
+      position: relative;
+      width: 100%;
+      height: 300px;
+      margin-top: -70px;
+      z-index: -100;
+      img {
+        
+        height: 300px;
+        width: 100%;
       }
     }
 
@@ -113,20 +154,27 @@ $lightGreen: #b9e7e7;
 
     footer {
       margin-top: 100px;
-      padding: 20px;
-      background-color: $lightGreen;
+      // position: absolute;
+      // bottom: 0;
+      // left: 0;
+      // right: 0;
+      height: 80px;
+      padding: 4px 80px;
+      background-color: #343A40;
       display: flex;
       align-items: center;
+      color: #fff;
       justify-content: space-between;
       font-size: 12px;
       img {
-        height: 50px;
+        height: 70px;
       }
     }
 
     //HOME
 
     .home {
+      padding: 100px 120px;
       .posts {
         margin-top: 50px;
         display: flex;
@@ -202,6 +250,7 @@ $lightGreen: #b9e7e7;
     .single {
       display: flex;
       gap: 50px;
+      padding: 0px 120px;
 
       .content {
         flex: 5;
@@ -304,6 +353,7 @@ $lightGreen: #b9e7e7;
       margin-top: 20px;
       display: flex;
       gap: 20px;
+      padding: 0px 120px;
 
       .content {
         flex: 5;

@@ -6,7 +6,7 @@ const Footer = () => {
     <footer>
       <img src={Logo} alt="" />
       <span>
-        Made with ♥️ and <b>React.js</b>.
+        2021 | JUL DANREB LACTAO
       </span>
     </footer>
   );
