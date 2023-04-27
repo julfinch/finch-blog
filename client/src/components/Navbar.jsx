@@ -34,12 +34,12 @@ const Navbar = () => {
           <Link className="link" to="/?cat=food">
             <h6>FOOD</h6>
           </Link>
-          <span>{currentUser?.username}</span>
+          <span className="username"><h6>{currentUser?.username}</h6></span>
           {currentUser ? (
-            <span className="login" onClick={logout}>Logout</span>
+            <span className="login" onClick={logout}><h6>LOG OUT</h6></span>
           ) : (
             <Link className="link login" to="/login">
-              <h6>LOGIN</h6>
+              <h6>LOG IN</h6>
             </Link>
           )}
           <span className="write">

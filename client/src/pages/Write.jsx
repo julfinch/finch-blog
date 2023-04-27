@@ -20,6 +20,7 @@ const Write = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("upload_preset", "finch-blog");
       const res = await axios.post("/upload", formData);
       return res.data;
     } catch (err) {
@@ -29,21 +30,25 @@ const Write = () => {
 
   const handleClick = async(e) => {
     e.preventDefault()
-    const imgUrl = await upload()
-
+    // const imgUrl = await upload()
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "finch-blog");
     try {
+      const uploadRes = await axios.post("https://api.cloudinary.com/v1_1/dwxdztigp/image/upload", formData);
+      const {url} = uploadRes.data;
       state 
         ? await axios.put(`/posts/${state.id}`, {
           title,
           desc: value,
           cat,
-          img: file ? imgUrl : "",
+          img: file ? url : "",
         })
       : await axios.post(`/posts/`, {
         title,
         desc: value,
         cat,
-        img: file ? imgUrl : "",
+        img: file ? url : "",
         date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss")
       });
       navigate("/")
