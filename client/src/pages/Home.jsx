@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
-
+import Banner from '../components/Banner'
+import banner from '../img/banner.png'
 
 const Home = () => {
 
@@ -56,11 +57,12 @@ const Home = () => {
 
   return (
     <div className='home'>
+        <img src={banner} alt="banner img" />
       <div className="posts">
         {posts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
-              <img src={`../upload/${post.img}`} alt="" />
+              <img src={post.img} alt="" />
             </div>
             <div className="content">
               <Link className='link' to={`/post/${post.id}`}>

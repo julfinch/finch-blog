@@ -46,13 +46,20 @@ const Single = () => {
 
   return (
     <div className='single'>
+      <img src={post?.img} alt="" />
       <div className="content">
-        <img src={post?.img} alt="" />
+        
+        <h1>{post.title}</h1>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(post.desc),
+          }}
+        ></p>
         <div className="user">
           {post.userImg && <img src={post.userImg} alt="" />
           }
           <div className="info">
-            <span>{post.username}</span>
+            <span>By {post.username}</span>
             <p>Posted {moment(post.date).fromNow()}</p>
           </div>
           {currentUser.username === post.username && (
@@ -64,12 +71,6 @@ const Single = () => {
           </div>
           )}
         </div>
-        <h1>{post.title}</h1>
-        <p
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(post.desc),
-          }}
-        ></p>
       </div>
       
       <Menu cat={post.cat}/>

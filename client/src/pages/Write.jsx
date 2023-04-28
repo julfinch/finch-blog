@@ -4,7 +4,30 @@ import React,{ useEffect, useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+const modules = {
+  toolbar: [
+    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+    [{size: []}],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'},
+     {'indent': '-1'}, {'indent': '+1'}],
+    ['link', 'image', 'video'],
+    ['clean']
+  ],
+  clipboard: {
+    // toggle to add extra line breaks when pasting HTML:
+    matchVisual: false,
+  }
+};
+
+const formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image', 'video'
+];
 
 const Write = () => {
 
@@ -75,7 +98,7 @@ const Write = () => {
       <div className="content">
         <input type="text" placeholder='Title' value={title} onChange={e=>setTitle(e.target.value)}/>
         <div className="editorContainer">
-          <ReactQuill theme='snow' value={value} onChange={setValue} />
+          <ReactQuill theme='snow' value={value} formats={formats} modules={modules} onChange={setValue} />
         </div>
       </div>
       <div className="menu">

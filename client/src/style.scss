@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 $lightGreen: #b9e7e7;
 
 * {
-  font-family: "Poppins", sans-serif !important;
+  font-family: "Poppins", sans-serif;
 }
 
 .app {
@@ -11,6 +12,22 @@ $lightGreen: #b9e7e7;
   justify-content: center;
   overflow-y: hidden;
   position: relative;
+  background-color: #020213;
+  color: #000;
+  font-family: "Poppins", sans-serif;
+  //QUILL EDITOR
+  .ql-container {
+    min-height: 10em;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background: #bebebe;
+  }
+  .ql-toolbar {
+    background: #eaecec;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+  }
+
   .container {
     width: 100%;
     .link {
@@ -71,7 +88,7 @@ $lightGreen: #b9e7e7;
     //NAVBAR
 
     .navbar {
-      padding: 0px 120px;
+      padding: 0px 160px;
       position: relative;
       height: 70px;
       background-color: rgba(0,0,0,0.4);
@@ -178,12 +195,19 @@ $lightGreen: #b9e7e7;
     //HOME
 
     .home {
-      padding: 100px 120px;
+
+      img {
+        
+        height: 300px;
+        width: 100%;
+      }
       .posts {
         margin-top: 50px;
+        padding: 100px 120px;
         display: flex;
         flex-direction: column;
         gap: 150px;
+        color: #fff;
 
         .post {
           display: flex;
@@ -252,27 +276,32 @@ $lightGreen: #b9e7e7;
     //SINGLE
 
     .single {
-      display: flex;
       gap: 50px;
-      padding: 0px 120px;
+      padding: 0px 160px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
       .content {
         flex: 5;
         display: flex;
         flex-direction: column;
         gap: 30px;
-
-        img {
-          width: 100%;
-          height: 300px;
-          object-fit: cover;
-        }
+        margin-bottom: 90px;
+        padding: 40px 200px 0;
+        font-family: "Lora", sans-serif !important;
+        color: #fff;
 
         .user {
           display: flex;
           align-items: center;
           gap: 10px;
           font-size: 14px;
+          padding-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
           img {
             width: 50px;
             height: 50px;
@@ -298,7 +327,6 @@ $lightGreen: #b9e7e7;
 
         h1 {
           font-size: 42px;
-          color: #333;
         }
 
         p {
@@ -354,26 +382,29 @@ $lightGreen: #b9e7e7;
     //WRITE
 
     .add {
-      margin-top: 20px;
+      margin-top: 40px;
       display: flex;
       gap: 20px;
-      padding: 0px 120px;
+      padding: 0px 160px;
 
       .content {
         flex: 5;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 40px;
+        margin-bottom: 10px;
 
         input {
           padding: 10px;
           border: 1px solid lightgray;
+          border-radius: 0.5em;
+          background: #eaecec;
         }
 
         .editorContainer {
-          height: 300px;
+          height: 350px;
           overflow: scroll;
-          border: 1px solid lightgray;
+          // border: 1px solid lightgray;
 
           .editor {
             height: 100%;
@@ -396,7 +427,8 @@ $lightGreen: #b9e7e7;
           flex-direction: column;
           justify-content: space-between;
           font-size: 12px;
-          color: #555;
+          color: #cccccc;
+          border-radius: 0.5em;
 
           h1{
             font-size: 20px;
@@ -410,20 +442,23 @@ $lightGreen: #b9e7e7;
           .buttons{
             display: flex;
             justify-content: space-between;
+            
 
             :first-child{
               cursor: pointer;
-              color: teal;
+              color: #000;
               background-color: white;
-              border: 1px solid teal;
+              border: 1px solid #000;
               padding: 3px 5px;
+              border-radius: 5px;
             }
             :last-child{
               cursor: pointer;
-              color: white;
-              background-color: teal;
-              border: 1px solid teal;
+              color: #000;
+              background-color: white;
+              border: 1px solid #000;
               padding: 3px 5px;
+              border-radius: 5px;
             }
           }
 
@@ -431,7 +466,7 @@ $lightGreen: #b9e7e7;
             display: flex;
             align-items: center;
             gap: 2px;
-            color: teal;
+            color: #cccccc;
           }
         }
       }
