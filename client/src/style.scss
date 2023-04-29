@@ -180,7 +180,7 @@ $lightGreen: #b9e7e7;
       // left: 0;
       // right: 0;
       height: 80px;
-      padding: 4px 80px;
+      padding: 4px 160px;
       background-color: #343A40;
       display: flex;
       align-items: center;
@@ -203,7 +203,7 @@ $lightGreen: #b9e7e7;
       }
       .posts {
         margin-top: 50px;
-        padding: 100px 120px;
+        padding: 100px 160px;
         display: flex;
         flex-direction: column;
         gap: 150px;
@@ -244,13 +244,18 @@ $lightGreen: #b9e7e7;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-
             h1 {
               font-size: 48px;
             }
 
             p {
-              font-size: 18px;
+              font-size: 15px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-line-clamp: 4; /* number of lines to show */
+              line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
 
             button {
